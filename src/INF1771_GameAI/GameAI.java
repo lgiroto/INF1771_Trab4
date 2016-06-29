@@ -134,7 +134,7 @@ public class GameAI
         	if(s.equals("blocked")){
         		action = new Query("add_obstaculo");
         		action.allSolutions();         	
-            } else if(s.equals("steps")){
+            } else if(s.equals("steps") || s.contains("enemy")){
             	action = new Query("avistar_inimigo");
         		action.oneSolution();  
             } else if(s.equals("breeze")){
@@ -184,7 +184,7 @@ public class GameAI
 			if(Action.equals("pegar_item") || Action.equals("pegar_powerup")){
 				Query pegar = new Query("pegar");
 				pegar.oneSolution();
-			} else if(Action.equals("atirar")){
+			} else if(Action.equals("atacar")){
 				Query atirar = new Query(Action);
 				atirar.oneSolution();
 			}

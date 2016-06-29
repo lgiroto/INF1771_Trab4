@@ -28,7 +28,7 @@ public class Bot implements Runnable {
 
 	List<String> msg = new ArrayList<String>();
 	double msgSeconds = 0;
-	int timer_interval = 1000;
+	int timer_interval = 100;
 
 	public Bot() {
 		// Set command listener to process commands received from server
@@ -186,6 +186,7 @@ public class Bot implements Runnable {
 				if (client.connected) {
 					System.out.println("Connected");
 					client.sendName(name);
+					client.sendColor(253,23,215);
 					client.sendRequestGameStatus();
 					client.sendRequestUserStatus();
 					client.sendRequestObservation();

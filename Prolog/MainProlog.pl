@@ -1,6 +1,5 @@
 :-dynamic posicao/3.
 :-dynamic conhecimento/4.
-:-dynamic vida/1.
 :-dynamic inimigo_avistado/1.
 
 posicao(0,0,north).
@@ -60,14 +59,11 @@ add_pu :- posicao(X,Y,_), retract(conhecimento(X,Y,_,_)), assert(conhecimento(X,
 % Avistar inimigo
 avistar_inimigo :- retract(inimigo_avistado(_)), assert(inimigo_avistado(1)).
 
-% Atirar
-atirar :- retract(inimigo_avistado(_)), assert(inimigo_avistado(0)).
+% Atacar
+atacar :- retract(inimigo_avistado(_)), assert(inimigo_avistado(0)).
 
 % Pegar Item/Powerup
 pegar :- posicao(X,Y,_), retract(conhecimento(X,Y,_,_)), assert(conhecimento(X,Y,nada,1)).
-
-% Buscar caminho livre do conhecimento
-buscar_livre(X, Y) :- posicao(PX,PY,_), conhecimento(X,Y,nada,0), (PX\=X;PY\=Y).
 
 % Ações, em ordem de preferência
 
@@ -78,7 +74,7 @@ acao(A) :- posicao(X, Y, _), conhecimento(X, Y, item, _), A = pegar_item.
 acao(A) :- posicao(X, Y, _), conhecimento(X, Y, powerup, _), A = pegar_powerup.
 
 	% Se avistou inimigo
-acao(A) :- inimigo_avistado(1), A = atirar.
+acao(A) :- inimigo_avistado(1), A = atacar.
 
 	% Andar para não visitado que não tenha nada
 acao(A) :- posicao(X,Y,P), P = north, Y > 0, YY is Y - 1,
@@ -92,7 +88,7 @@ acao(A) :- posicao(X,Y,P), P = west, X > 0,  XX is X - 1,
 
 	% Virar-se caso tenha algum adjacente não visitado que não tenha nada 
 acao(A) :- posicao(X,Y,_), adjacente(X, Y, AX, AY),
-           conhecimento(AX, AY, S, 0), (S=nada;S=item), A = virar_direita.
+           conhecimento(AX, AY, nada, 0), A = virar_direita.
 
     % Andar por onde já foi se não tiver mais opção
 acao(A) :- posicao(X,Y,P), P = north, Y > 0, YY is Y - 1,
